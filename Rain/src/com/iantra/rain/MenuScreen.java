@@ -56,7 +56,12 @@ public class MenuScreen extends Screen {
     }
     
     void drawMenu(){
+    	Paint p = new Paint();
+    	p.setTextSize(120);
+    	p.setTextAlign(Paint.Align.CENTER);
+    	
     	g.drawScaledImage(Assets.menu, 0, 0, Assets.screenWidth, Assets.screenHeight, 0, 0, 1080, 1920);
+    	g.drawString("Rain", Assets.screenWidth/2, Assets.screenHeight/3, p);
     	if(isButtonPressed){
     		g.drawScaledImage(Assets.select, (int)((float)Assets.screenWidth/3), (int)((float)Assets.screenHeight*1.9/6), 30, 30, 0, 0, 60, 60);
     	}
