@@ -1,5 +1,7 @@
 package com.iantra.rain;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
@@ -55,6 +57,8 @@ public class GameScreen extends Screen {
         newRandomColor();
         // Defining a paint object
         paint = new Paint();
+        paint.setTypeface(Assets.roboto);
+    	paint.setAntiAlias(true);
         resetPaint();
     }
 
@@ -108,6 +112,10 @@ public class GameScreen extends Screen {
 	       		}else{
 	           		ground.setTargetY(ground.getTargetY()+(yStep*(float) lvl * 1.5f));
 	       		}
+	       }
+	       if(dot.getType() == 3 && dot.getY() >= ground.getTargetY()/3 && !(dot.getTargetColor()[0] == 255-gameColor[0] && dot.getTargetColor()[1] == 255-gameColor[1] && dot.getTargetColor()[2] == 255-gameColor[2])){
+	    	   dot.setTargetColor(new int[]{255-gameColor[0], 255-gameColor[1], 255-gameColor[2]});
+	    	   Log.i("rand", ""+dot.getY());
 	       }
        }
        ground.update(_dt);
@@ -212,20 +220,20 @@ public class GameScreen extends Screen {
     private void drawRunningUI() {
         for(int i = 0; i < dots.size(); i++){
         	Dot dot = dots.get(i);
-        	float newR = (float)gameColor[0]/255;
+        	/*float newR = (float)gameColor[0]/255;
         	float newG = (float)gameColor[1]/255;
-        	float newB = (float)gameColor[2]/255;
-        	if(dot.getType() == 1){
+        	float newB = (float)gameColor[2]/255;*/
+        	//if(dot.getType() == 1){
         		/*Test hitbox (for dot type 2) *///g.drawRect((int)(dot.getX() - dot.getWidth()/2), (int)(dot.getY() - dot.getHeight()/2), (int) dot.getWidth(), (int) dot.getHeight(), Color.rgb(gameColor[0], gameColor[1], gameColor[2]));
-        		g.drawImage(Assets.dot, (int)(dot.getX() - Assets.dot.getWidth()/2), (int)(dot.getY() - Assets.dot.getHeight()/2), Assets.dot.colorize(newR, newG, newB));
-        	}else if(dot.getType() == 2){
-        		g.drawImage(Assets.dot, (int)(dot.getX() - Assets.dot.getWidth()/2), (int)(dot.getY() - Assets.dot.getHeight()/2), Assets.dot.colorize(1-newR, 1-newG, 1-newB));
+        		g.drawImage(Assets.dot, (int)(dot.getX() - Assets.dot.getWidth()/2), (int)(dot.getY() - Assets.dot.getHeight()/2), Assets.dot.colorize(dot.getColor()));
+        	/*}else if(dot.getType() == 2){
+        		g.drawImage(Assets.dot, (int)(dot.getX() - Assets.dot.getWidth()/2), (int)(dot.getY() - Assets.dot.getHeight()/2), Assets.dot.colorize(dot.getColor()));
         	}else if(dot.getType() == 3){
         		if(dot.getY() <= ground.getTargetY()/4)
-        			g.drawImage(Assets.dot, (int)(dot.getX() - Assets.dot.getWidth()/2), (int)(dot.getY() - Assets.dot.getHeight()/2), Assets.dot.colorize(newR, newG, newB));
+        			g.drawImage(Assets.dot, (int)(dot.getX() - Assets.dot.getWidth()/2), (int)(dot.getY() - Assets.dot.getHeight()/2), Assets.dot.colorize(dot.getColor()));
         		else
-        			g.drawImage(Assets.dot, (int)(dot.getX() - Assets.dot.getWidth()/2), (int)(dot.getY() - Assets.dot.getHeight()/2), Assets.dot.colorize(1-newR, 1-newG, 1-newB));
-        	}
+        			g.drawImage(Assets.dot, (int)(dot.getX() - Assets.dot.getWidth()/2), (int)(dot.getY() - Assets.dot.getHeight()/2), Assets.dot.colorize(dot.getColor()));
+        	}*/
         }
         g.drawRect(ground.getX(), ground.getY(), ground.getWidth(), ground.getHeight(), Color.rgb(gameColor[0], gameColor[1], gameColor[2]));
         g.drawString(""+lvl, 10, 50, paint);
@@ -241,13 +249,16 @@ public class GameScreen extends Screen {
     private void drawGameOverUI() {
     	
         Graphics g = game.getGraphics();
-        g.drawRect(0, 0, screenWidth+1, screenHeight+1, BG_COLOR);
+        g.clearScreen(BG_COLOR);
+        paint.setTypeface(Assets.roboto);
+    	paint.setAntiAlias(true);
         paint.setColor(Color.BLACK);
         paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(60);
         g.drawString("GAME OVER.", screenWidth/2, screenHeight*2/5, paint);
-        g.drawString("You lost at level " + lvl + ".", screenWidth/2, screenHeight*2/5+40, paint);
-        paint.setTextSize(50);
-        g.drawString("try again", screenWidth/2, screenHeight*2/5+150, paint);
+        g.drawString("You lost at level " + lvl + ".", screenWidth/2, screenHeight*4/9, paint);
+        paint.setTextSize(80);
+        g.drawString("try again", screenWidth/2, screenHeight*5/9, paint);
         resetPaint();
     }
 
@@ -270,7 +281,7 @@ public class GameScreen extends Screen {
 
     @Override
     public void backButton() {
-        pause();
+    	game.setScreen(new MenuScreen(game));
     }
     
     
@@ -283,7 +294,11 @@ public class GameScreen extends Screen {
     	}else{
     		typeCap = 3;
     	}
-    	Dot dot = new Dot(new Random().nextInt(screenWidth), -20, screenHeight, new Random().nextInt(typeCap)+1, (float)Math.sqrt((float)lvl * 0.80 + new Random().nextFloat() * (float)lvl * 0.7)/(3 + lvl/3));
+    	int r = new Random().nextInt(typeCap)+1;
+    	Dot dot = new Dot(new Random().nextInt(screenWidth), -20, screenHeight, r, (float)Math.sqrt((float)lvl * 0.80 + new Random().nextFloat() * (float)lvl * 0.7)/(3 + lvl/3), gameColor);
+    	if(r == 2){
+    		dot.setColor(new int[]{255-gameColor[0], 255-gameColor[1], 255-gameColor[2]});
+    	}
     	dots.add(dot);
     	
     }
@@ -305,6 +320,13 @@ public class GameScreen extends Screen {
     	Random ran = new Random();
     	int[] ic = {ran.nextInt(255), ran.nextInt(255), ran.nextInt(255)};
     	int[] color = {(ic[0]+255)/2, (ic[1]+255)/2, (ic[2]+255)/2};
+    	for(int i = 0; i < dots.size(); i++){
+    		Dot d = dots.get(i);
+    		if(d.getType() != 2)
+    			d.setTargetColor(color);
+    		else 
+				d.setTargetColor(new int[]{255 - color[0], 255 - color[1], 255 - color[2]});
+    	}
     	gameColor = color;
     }
     

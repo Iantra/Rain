@@ -11,4 +11,5 @@ public class Assets {
     public static Image menu;
     public static Image select;
     public static int screenWidth, screenHeight;
+    public static Typeface roboto;
 }

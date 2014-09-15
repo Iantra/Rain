@@ -40,16 +40,17 @@ public class AndroidImage implements Image {
     }      
     
     @Override
-    public Paint colorize(float r, float g, float b){
+    public Paint colorize(int[] c){
+    		float[] ce = new float[]{(float)c[0], (float)c[1], (float)c[2]};
     	    float[] colorTransform = {
-    	            0, r, 0, 0, 0, 
-    	            0, 0, g, 0, 0,
-    	            0, 0, 0, b, 0, 
+    	            0, ce[0]/255, 0, 0, 0, 
+    	            0, 0, ce[1]/255, 0, 0,
+    	            0, 0, 0, ce[2]/255, 0, 
     	            0, 0, 0, 1f, 0};
 
     	    ColorMatrix colorMatrix = new ColorMatrix();
     	    colorMatrix.setSaturation(0f); //Remove Colour 
-    	    colorMatrix.set(colorTransform); //Apply the Red
+    	    colorMatrix.set(colorTransform); //Apply the Color
 
     	    ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(colorMatrix);
     	    Paint paint = new Paint();

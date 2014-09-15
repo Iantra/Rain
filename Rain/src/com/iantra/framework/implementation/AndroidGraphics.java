@@ -131,10 +131,8 @@ public class AndroidGraphics implements Graphics {
         canvas.drawBitmap(((AndroidImage)Image).bitmap, x, y, paint);
     }
     
-    public void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight){
-        
-        
-     srcRect.left = srcX;
+    public void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight, Paint paint){
+    	srcRect.left = srcX;
         srcRect.top = srcY;
         srcRect.right = srcX + srcWidth;
         srcRect.bottom = srcY + srcHeight;
@@ -147,8 +145,10 @@ public class AndroidGraphics implements Graphics {
         
    
         
-        canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, null);
-        
+        canvas.drawBitmap(((AndroidImage) Image).bitmap, srcRect, dstRect, paint);
+    }
+    public void drawScaledImage(Image Image, int x, int y, int width, int height, int srcX, int srcY, int srcWidth, int srcHeight){
+        drawScaledImage(Image, x, y, width, height, srcX, srcY, srcWidth, srcHeight, null);
     }
    
     public void rotate(float deg){

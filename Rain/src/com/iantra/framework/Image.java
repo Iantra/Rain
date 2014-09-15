@@ -9,5 +9,5 @@ public interface Image {
     public int getHeight();
     public ImageFormat getFormat();
     public void dispose();
-    public Paint colorize(float r, float g, float b);
+    public Paint colorize(int[] c);
 }

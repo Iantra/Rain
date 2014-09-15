@@ -30,7 +30,6 @@ public class LoadingScreen extends Screen {
         Assets.screenWidth = g.getWidth();
         Assets.screenHeight = g.getHeight();
         game.setScreen(new MenuScreen(game));
-
     }
     
     
@@ -42,28 +41,20 @@ public class LoadingScreen extends Screen {
 
     @Override
     public void pause() {
-
-
     }
 
 
     @Override
     public void resume() {
-
-
     }
 
 
     @Override
     public void dispose() {
-
-
     }
 
 
     @Override
     public void backButton() {
-
-
     }
 }
