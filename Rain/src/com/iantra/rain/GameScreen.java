@@ -318,7 +318,19 @@ public class GameScreen extends Screen {
     
     void newRandomColor(){
     	Random ran = new Random();
-    	int[] ic = {ran.nextInt(255), ran.nextInt(255), ran.nextInt(255)};
+    	int rr, rg, rb, m, t, c[];
+    	m = 600;
+    	c = new int[3];
+    	for(int i = 0; i < c.length; i++){
+    		if(m > 255)
+        		t = 255;
+        	else
+        		t = m;
+        	c[i] = ran.nextInt(t);
+        	m -= c[i];
+    	}
+    	
+    	int[] ic = {c[0], c[1], c[2]};
     	int[] color = {(ic[0]+255)/2, (ic[1]+255)/2, (ic[2]+255)/2};
     	for(int i = 0; i < dots.size(); i++){
     		Dot d = dots.get(i);
